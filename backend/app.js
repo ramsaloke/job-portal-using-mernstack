@@ -38,6 +38,11 @@ app.use("/api/v1/job", jobRouter);
 
 newsLetterCron()
 
+app.get('/', (req,res)=>{
+    res.status(200).json({
+        message: 'Server is running successfully'
+    })
+})
 
 connection();
 app.use(errorMiddleware)
