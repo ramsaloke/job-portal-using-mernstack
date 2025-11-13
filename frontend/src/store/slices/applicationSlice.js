@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const BACKEND_URL = process.env.NODE === "production"
+? "https://jobportal-hpjg.onrender.com" 
+  : "http://localhost:8080";
+
 const applicationSlice = createSlice({
   name: "applications",
   initialState: {
@@ -84,7 +88,7 @@ export const fetchEmployerApplications = () => async (dispatch) => {
   dispatch(applicationSlice.actions.requestForAllApplications());
   try {
     const response = await axios.get(
-      `http://localhost:8080/api/v1/application/employer/getall`,
+      `${BACKEND_URL}/api/v1/application/employer/getall`,
       {
         withCredentials: true,
       }
@@ -108,7 +112,7 @@ export const fetchJobSeekerApplications = () => async (dispatch) => {
   dispatch(applicationSlice.actions.requestForMyApplications());
   try {
     const response = await axios.get(
-      `http://localhost:8080/api/v1/application/jobseeker/getall`,
+      `${BACKEND_URL}/api/v1/application/jobseeker/getall`,
       {
         withCredentials: true,
       }
@@ -132,7 +136,7 @@ export const postApplication = (data, jobId) => async (dispatch) => {
   dispatch(applicationSlice.actions.requestForPostApplication());
   try {
     const response = await axios.post(
-      `http://localhost:8080/api/v1/application/post/${jobId}`,
+      `${BACKEND_URL}/api/v1/application/post/${jobId}`,
       data,
       {
         withCredentials: true,
@@ -156,7 +160,7 @@ export const deleteApplication = (id) => async (dispatch) => {
   dispatch(applicationSlice.actions.requestForDeleteApplication());
   try {
     const response = await axios.delete(
-      `http://localhost:8080/api/v1/application/delete/${id}`,
+      `${BACKEND_URL}/api/v1/application/delete/${id}`,
       { withCredentials: true }
     );
     dispatch(

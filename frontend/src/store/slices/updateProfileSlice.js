@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const BACKEND_URL = process.env.NODE_ENV === "production" 
+  ? "https://jobportal-hpjg.onrender.com" 
+  : "http://localhost:8080"; 
+
 const updateProfileSlice = createSlice({
   name: "updateProfile",
   initialState: {
@@ -47,7 +51,7 @@ export const updateProfile = (data) => async (dispatch) => {
   dispatch(updateProfileSlice.actions.updateProfileRequest());
   try {
     const response = await axios.put(
-      "http://localhost:8080/api/v1/user/update/profile",
+      `${BACKEND_URL}/api/v1/user/update/profile`,
       data,
       {
         withCredentials: true,
@@ -67,7 +71,7 @@ export const updatePassword = (data) => async (dispatch) => {
   dispatch(updateProfileSlice.actions.updatePasswordRequest());
   try {
     const response = await axios.put(
-      "http://localhost:8080/api/v1/user/update/password",
+      `${BACKEND_URL}http://localhost:8080/api/v1/user/update/password`,
       data,
       {
         withCredentials: true,
