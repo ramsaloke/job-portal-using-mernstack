@@ -16,11 +16,26 @@ import { newsLetterCron } from "./automation/newLetterCron.js";
 const app = express();
 config({path:"./config/.env"});
 
-app.use(cors({
-    origin:[process.env.FRONTEND_URL],
-    methods:["GET", "POST","PUT","DELETE"],
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "http://localhost:5173",
+  "http://localhost:3000",
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // allow tools like curl/postman (no origin) and allowed frontends
+      if (!origin) return callback(null, true);
+      return allowedOrigins.includes(origin)
+        ? callback(null, true)
+        : callback(new Error("CORS policy does not allow this origin"));
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-}));
+    optionsSuccessStatus: 200,
+  })
+);
 
 app.use(cookieParser());
 app.use(express.json());
@@ -34,8 +49,8 @@ app.use(fileUpload({
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/job", jobRouter);
 app.use("/api/v1/application", applcationRouter);
-app.use("/api/v1/job", jobRouter);
 
+connection();
 newsLetterCron()
 
 app.get('/', (req,res)=>{
@@ -44,6 +59,6 @@ app.get('/', (req,res)=>{
     })
 })
 
-connection();
+
 app.use(errorMiddleware)
 export default app;
