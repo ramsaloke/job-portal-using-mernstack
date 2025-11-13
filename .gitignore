@@ -1,0 +1,9 @@
+# ...existing code...
+node_modules
+**/node_modules
+frontend/dist
+.env
+*.env.local
+.DS_Store
+.vscode
+# keep package-lock.json / yarn.lock for reproducible builds
